@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"gin_demo/utils"
+	"github.com/SBOrg666/lite-yun-golang/utils"
 	"github.com/gin-contrib/sessions"
 	"github.com/satori/go.uuid"
 	"github.com/jasonlvhit/gocron"
