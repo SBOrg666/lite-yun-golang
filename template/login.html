@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="shortcut icon" href="/favicon.ico"/>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Lite Yun - Login</title>
+    <!-- Bootstrap core CSS-->
+    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom fonts for this template-->
+    <link href="/static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- Custom styles for this template-->
+    <link href="/static/css/sb-admin.css" rel="stylesheet">
+</head>
+
+<body class="bg-dark">
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Error</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">Login failed.</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"> OK</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<div class="container">
+    <div class="card card-login mx-auto mt-5">
+        <div class="card-header">Login</div>
+        <div class="card-body">
+            <form id="form">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email address</label>
+                    <input class="form-control" id="exampleInputEmail1" name="username" type="email"
+                           aria-describedby="emailHelp" required="required"
+                           placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Password</label>
+                    <div class="input-group">
+                        <input class="form-control" id="exampleInputPassword1" name="password" type="password"
+                               placeholder="Password" required="required">
+                        <span class="input-group-addon"><i class="fa fa-fw fa-eye-slash" id="showpasswd"></i></span>
+                    </div>
+                </div>
+                <!--<div class="form-group">-->
+                <!--<div class="form-check">-->
+                <!--<label class="form-check-label">-->
+                <!--<input class="form-check-input" type="checkbox"> Remember Password</label>-->
+                <!--</div>-->
+                <!--</div>-->
+                <input id="submit" type="submit" value="Login" class="btn btn-primary btn-block">
+            </form>
+            <!--<div class="text-center">-->
+            <!--<a class="d-block small mt-3" href="register.html">Register an Account</a>-->
+            <!--<a class="d-block small" href="forgot-password.html">Forgot Password?</a>-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+<!-- Bootstrap core JavaScript-->
+<script src="/static/vendor/jquery/jquery.min.js"></script>
+<script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Core plugin JavaScript-->
+<script src="/static/vendor/jquery-easing/jquery.easing.min.js"></script>
+</body>
+<script>
+    function getCookie(name) {
+        var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+        return r ? r[1] : undefined;
+    }
+
+    $.urlParam = function (name) {
+        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+        return results[1] || 0;
+    }
+
+    $("#showpasswd").click(function () {
+        if ($(this).attr("class") === "fa fa-fw fa-eye-slash") {
+            $(this).attr("class", "fa fa-fw fa-eye");
+            $("#exampleInputPassword1").attr("type", "text");
+        }
+        else {
+            $(this).attr("class", "fa fa-fw fa-eye-slash");
+            $("#exampleInputPassword1").attr("type", "password");
+        }
+    })
+
+    $(function () {
+        $("#form").submit(function () {
+            $.ajax(
+                {
+                    url: "/login",
+                    headers: {
+                        "X-XSRFToken": getCookie("_xsrf"),
+                    },
+                    data: $('#form').serialize(),
+                    type: "post",
+                    success: function (result) {
+                        if (result === "ok") {
+                            // alert(location.protocol + "//" + location.host + decodeURIComponent($.urlParam('next')));
+                            window.location.href = location.protocol + "//" + location.host;
+                        }
+                        else {
+                            $(function () {
+                                $('#myModal').modal({
+                                    keyboard: true,
+                                })
+                            });
+                        }
+                    }
+                }
+            )
+            return false;
+        })
+    })
+</script>
+<style>
+    .input-group-addon {
+        padding: .375rem .75rem;
+        margin-bottom: 0;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        text-align: center;
+        background-color: #e9ecef;
+        border: 1px solid #ced4da;
+        border-radius: .25rem;
+    }
+</style>
+</html>

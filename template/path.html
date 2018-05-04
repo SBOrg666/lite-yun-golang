@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="shortcut icon" href="/favicon.ico"/>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Lite Yun - Path</title>
+    <!-- Bootstrap core CSS-->
+
+    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom fonts for this template-->
+    <link href="/static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- Custom styles for this template-->
+    <link href="/static/css/sb-admin.css" rel="stylesheet">
+    <link href="/static/jQuery-File-Upload/css/style.css" rel="stylesheet">
+    <link href="/static/jQuery-File-Upload/css/jquery.fileupload.css" rel="stylesheet">
+
+    <!-- Page level plugin CSS-->
+    <link href="/static/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="/static/css/sb-admin.css" rel="stylesheet">
+</head>
+
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+
+<div class="modal fade" id="upload_done" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Info
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                Upload succeed.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"> OK
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<div class="modal fade" id="delete_done" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Info
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                Delete succeed.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"> OK
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <a class="navbar-brand" href="/index.html">Lite Yun</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+            data-target="#navbarResponsive"
+            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+                <a class="nav-link" href="/index.html">
+                    <i class="fa fa-fw fa-dashboard"></i>
+                    <span class="nav-link-text">Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+                <a class="nav-link" href="/processes.html">
+                    <i class="fa fa-fw fa-table"></i>
+                    <span class="nav-link-text">Processes</span>
+                </a>
+            </li>
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+                <a class="nav-link" href="/path">
+                    <i class="fa fa-fw fa-tree"></i>
+                    <span class="nav-link-text">Dir Tree</span>
+                </a>
+            </li>
+            {{/*<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">*/}}
+                {{/*<a class="nav-link" href="/vnc.html">*/}}
+                    {{/*<i class="fa fa-fw fa-terminal"></i>*/}}
+                    {{/*<span class="nav-link-text">VNC Terminal</span>*/}}
+                {{/*</a>*/}}
+            {{/*</li>*/}}
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
+                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents"
+                   data-parent="#exampleAccordion">
+                    <i class="fa fa-fw fa-wrench"></i>
+                    <span class="nav-link-text">About</span>
+                </a>
+                <ul class="sidenav-second-level collapse" id="collapseComponents">
+                    <li>
+                        <a href="/about">About</a>
+                    </li>
+                    <li>
+                        <a href="/authors">Authors</a>
+                    </li>
+                </ul>
+            </li>
+            <!--<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Link">-->
+            <!--<a class="nav-link" href="#">-->
+            <!--<i class="fa fa-fw fa-link"></i>-->
+            <!--<span class="nav-link-text">Link</span>-->
+            <!--</a>-->
+            <!--</li>-->
+        </ul>
+        <ul class="navbar-nav sidenav-toggler">
+            <li class="nav-item">
+                <a class="nav-link text-center" id="sidenavToggler">
+                    <i class="fa fa-fw fa-angle-left"></i>
+                </a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
+                    <i class="fa fa-fw fa-sign-out"></i>Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/index.html">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Dir Tree</li>
+        </ol>
+        <div class="row">
+            <div class="col-12">
+                <h1 id="path">path:{{ .header }}</h1>
+                <p>
+                    <button class="btn btn-primary" data-complete-text="Download" id="download_btn">Download</button>
+                    {{ if .writable }}
+                        <button class="btn btn-primary" data-complete-text="Upload" id="upload_btn">Upload</button>
+                        <button class="btn btn-danger" data-complete-text="Delete" id="delete_btn">Delete</button>
+                        <input type="file" name="files" data-url="/upload?path={{ .header }}" id="upload_input"
+                               style="visibility:hidden;height:0;width:0;display:block"
+                               multiple>
+                        <div id="progress" class="progress">
+                            <div class="progress-bar progress-bar-success"></div>
+                        </div>
+                    {{ else }}
+                        <button class="btn btn-primary" data-complete-text="Upload" id="upload_btn" disabled="disabled">Upload
+                        </button>
+                        <button class="btn btn-danger" data-complete-text="Delete" id="delete_btn" disabled="disabled">Delete
+                        </button>
+                    {{ end }}
+                </p>
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" id="check_all" style="zoom:180%;"/></th>
+                            <th>Name</th>
+                            <th>Permissions</th>
+                            <th>Size</th>
+                            <th>Owner</th>
+                            <th>Group</th>
+                            <th>Date Modified</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th> </th>
+                            <th>Name</th>
+                            <th>Permissions</th>
+                            <th>Size</th>
+                            <th>Owner</th>
+                            <th>Group</th>
+                            <th>Date Modified</th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        {{ range .dirs }}
+                        <tr>
+                            {{ if not .Access }}
+                                <td><input type="checkbox" style="zoom:180%;" class="checkboxes" disabled="disabled"/></td>
+                                <td><a style="color:#868e96;background-color:transparent">{{ .DirName }}</a></td>
+                            {{ else }}
+                                <td><input type="checkbox" style="zoom:180%;" class="checkboxes"/></td>
+                                <td><a href="{{ .Url }}">{{ .DirName }}</a></td>
+                            {{ end }}
+                                <td>{{ .Permission }}</td>
+                                <td>{{ .Size }}</td>
+                                <td>{{ .Owner }}</td>
+                                <td>{{ .Group }}</td>
+                                <td>{{ .Mtime}}</td>
+                        </tr>
+                        {{ end }}
+
+                        {{ range .files }}
+                        <tr>
+                            {{ if not .Access }}
+                                <td><input type="checkbox" style="zoom:180%;" class="checkboxes" disabled="disabled"/></td>
+                                <td><span style="color:#868e96;">{{ .FileName }}</span></td>
+                            {{ else }}
+                                <td><input type="checkbox" style="zoom:180%;" class="checkboxes"/></td>
+                                <td><span style="color:green;">{{ .FileName }}</span></td>
+                            {{ end }}
+                                <td>{{ .Permission }}</td>
+                                <td>{{ .Size }}</td>
+                                <td>{{ .Owner }}</td>
+                                <td>{{ .Group }}</td>
+                                <td>{{ .Mtime}}</td>
+                        </tr>
+                        {{ end }}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">
+                        Oops...
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                    </button>
+                </div>
+                <div class="modal-body">
+                    No file or directory is selected.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close
+                    </button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <!-- /.container-fluid-->
+    <!-- /.content-wrapper-->
+    <footer class="sticky-footer">
+        <div class="container">
+            <div class="text-center">
+                <small>Copyright © Lite Yun 2018</small>
+            </div>
+        </div>
+    </footer>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fa fa-angle-up"></i>
+    </a>
+    <!-- Logout Modal-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="/login?next=%2F" id="logout_btn">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap core JavaScript-->
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/js.cookie-2.2.0.min.js"></script>
+    <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/vendor/bootstrap/js/bootstrap.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="/static/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="/static/js/sb-admin.min.js"></script>
+    <script src="/static/jQuery-File-Upload/js/jquery.iframe-transport.js"></script>
+    <script src="/static/jQuery-File-Upload/js/vendor/jquery.ui.widget.js"></script>
+    <script src="/static/jQuery-File-Upload/js/jquery.fileupload.js"></script>
+    <script src="/static/jQuery-File-Upload/js/jquery.fileupload-process.js"></script>
+    <script src="/static/jQuery-File-Upload/js/jquery.fileupload-validate.js"></script>
+
+    <!-- Page level plugin JavaScript-->
+    <script src="/static/vendor/datatables/jquery.dataTables.js"></script>
+    <script src="/static/vendor/datatables/dataTables.bootstrap4.js"></script>
+    <script src="/static/vendor/datatables/fnAddTr.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="/static/js/sb-admin.min.js"></script>
+    <!-- Custom scripts for this page-->
+    <script src="/static/js/sb-admin-datatables.min.js"></script>
+</div>
+</body>
+
+<script type="text/javascript">
+    var urls = new Set();
+
+    $(function(){
+        // $("select[name='dataTable_length']")[0].options[0].selected = false;
+        // $("select[name='dataTable_length']")[0].options[3].selected = true;
+    });
+
+    $("#check_all").click(function () {
+        if (this.checked === true) {
+            $(".checkboxes").each(function () {
+                if (!($(this).prop("checked"))) {
+                    $(this).click();
+                }
+            })
+        } else {
+            $(".checkboxes").each(function () {
+                if ($(this).prop("checked")) {
+                    $(this).click();
+                }
+            })
+        }
+    });
+
+    $(".checkboxes").click(function () {
+        if ($(this).prop("checked") === true) {
+            if ($(this).parent().next().children().eq(0).attr("href")) {
+                urls.add($(this).parent().next().children().eq(0).attr("href").substring(11));
+            } else {
+                var p = $("#path").html().substring(5);
+                if (p === "/") {
+                    urls.add(p + $(this).parent().next().children().eq(0).html());
+                } else {
+                    urls.add(p + "/" + $(this).parent().next().children().eq(0).html());
+                }
+            }
+        } else {
+            if ($("#check_all").prop("checked") === true) {
+                $("#check_all").prop("checked", false);
+            }
+            if ($(this).next().children().eq(0).attr("href")) {
+                urls.delete($(this).parent().next().children().eq(0).attr("href").substring(11));
+            } else {
+                var p = $("#path").html().substring(5);
+                if (p === "/") {
+                    urls.delete(p + $(this).parent().next().children().eq(0).html());
+                } else {
+                    urls.delete(p + "/" + $(this).parent().next().children().eq(0).html());
+                }
+            }
+        }
+    });
+
+    function getCookie(name) {
+        var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+        return r ? r[1] : undefined;
+    }
+
+    $("#download_btn").click(function () {
+        if (urls.size) {
+            $.ajax({
+                url: "/download",
+                headers: {
+                    "X-XSRFToken": getCookie("_xsrf"),
+                },
+                data: JSON.stringify({files:Array.from(urls)}),
+                type: "post",
+                success: function (result) {
+                    if(result.split(" ")[0]==="ok"){
+                        document.location.href = "/download?name=" + result.split(" ")[1];
+                    }
+                }
+            });
+        } else {
+            $(function () {
+                $('#myModal').modal({
+                    keyboard: true
+                })
+            });
+        }
+    });
+
+    $("#delete_btn").click(function () {
+        if (urls.size) {
+            $.ajax({
+                url: "/delete",
+                headers: {
+                    "X-XSRFToken": getCookie("_xsrf"),
+                },
+                data: JSON.stringify({files:Array.from(urls)}),
+                type: "post",
+                success: function (result) {
+                    if(result==="ok"){
+                        $('#delete_done').modal({
+                            keyboard: true
+                        })
+                    }
+                }
+            });
+        } else {
+            $(function () {
+                $('#myModal').modal({
+                    keyboard: true
+                })
+            });
+        }
+    });
+
+    $("#upload_input").fileupload({
+        url: "/upload",
+        headers: {
+            "X-XSRFToken": getCookie("_xsrf"),
+        },
+        maxFileSize: 99 * 1024 * 1024,
+        formData: {
+            'path': $("#path").html().substring(6)
+        },
+        returnType: "json",
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .progress-bar').css(
+                'width',
+                progress + '%'
+            );
+        },
+        processfail: function (e, data) {
+            var currentFile = data.files[data.index];
+            if (data.files.error && currentFile.error) {
+                $("#upload_input").after();
+                alert(currentFile.name + currentFile.error);
+            }
+        }
+    }).bind('fileuploadprogressall', function (e, data) {
+        if (data.loaded == data.total) {
+            $('#upload_done').modal({
+                keyboard: true
+            })
+        }
+    });
+
+    $("#upload_input").bind('fileuploadstop', function (e) {
+        $("#upload_input").after();
+    });
+
+    $("#upload_btn").click(function () {
+        $("#upload_input").click();
+    });
+
+    $(function () {
+        $('.modal').on('hidden.bs.modal', function () {
+            location.reload();
+        })
+    });
+
+    $("#logout_btn").click(function () {
+        Cookies.remove('login');
+        Cookies.remove('_xsrf');
+    });
+</script>
+
+</html>
