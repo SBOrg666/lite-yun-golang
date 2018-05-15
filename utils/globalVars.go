@@ -6,4 +6,6 @@ var (
 	InitUpload    uint64
 	InitDownload  uint64
 	Current_Month int
+	Port          uint
+	Logfile       string
 )

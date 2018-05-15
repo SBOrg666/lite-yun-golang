@@ -86,7 +86,7 @@ func SystemInfoHandler_ws(w http.ResponseWriter, r *http.Request) {
 	defer func() {
 		ticker.Stop()
 	}()
-	err = conn.WriteJSON(gin.H{"log_info": GetLog_Info("/var/log/pacman.log"),
+	err = conn.WriteJSON(gin.H{"log_info": GetLog_Info(Logfile),
 		"cpu_info": GetCpu_Info(),
 		"sys_info": GetSys_Info(),
 		"mem_info": GetMem_Info(),
@@ -100,7 +100,7 @@ func SystemInfoHandler_ws(w http.ResponseWriter, r *http.Request) {
 	}
 	for range ticker.C {
 		//log.Println("websocket ok")
-		err := conn.WriteJSON(gin.H{"log_info": GetLog_Info("/var/log/pacman.log"),
+		err := conn.WriteJSON(gin.H{"log_info": GetLog_Info(Logfile),
 			"cpu_info": GetCpu_Info(),
 			"sys_info": GetSys_Info(),
 			"mem_info": GetMem_Info(),
@@ -327,7 +327,7 @@ func DownloadHandler_post(c *gin.Context) {
 }
 
 func UploadHandler_post(c *gin.Context) {
-	path:=c.DefaultPostForm("path","")
+	path := c.DefaultPostForm("path", "")
 	if len(path) == 0 {
 		c.String(http.StatusBadRequest, "invalid path")
 	} else {

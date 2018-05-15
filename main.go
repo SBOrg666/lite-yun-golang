@@ -7,9 +7,18 @@ import (
 	"github.com/satori/go.uuid"
 	"github.com/jasonlvhit/gocron"
 	"time"
+	"flag"
+	"fmt"
 )
 
 func main() {
+	port := flag.Uint("p", 8000, "port to serve")
+	logfile := flag.String("l", "/var/log/pacman.log", "path of logfile")
+	flag.Parse()
+
+	utils.Port = *port
+	utils.Logfile = *logfile
+
 	router := gin.Default()
 	store := sessions.NewCookieStore([]byte(uuid.Must(uuid.NewV4()).String()))
 	store.Options(sessions.Options{MaxAge: 0, HttpOnly: false})
@@ -68,5 +77,5 @@ func main() {
 	utils.Current_Month = int(time.Now().Month())
 	gocron.Every(1).Day().Do(utils.UpdateNetworkData)
 
-	router.Run(":8000")
+	router.Run(":" + fmt.Sprint(*port))
 }
