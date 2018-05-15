@@ -620,8 +620,7 @@
 
     $(function () {
         $("#logout_btn").click(function () {
-            Cookies.remove('login');
-            Cookies.remove('_xsrf');
+            Cookies.remove('session');
         });
 
         $("#cpu_scroll").click(function () {

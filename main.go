@@ -12,7 +12,7 @@ import (
 func main() {
 	router := gin.Default()
 	store := sessions.NewCookieStore([]byte(uuid.Must(uuid.NewV4()).String()))
-	store.Options(sessions.Options{MaxAge: 0, HttpOnly: true})
+	store.Options(sessions.Options{MaxAge: 0, HttpOnly: false})
 	router.Use(sessions.Sessions("session", store))
 
 	router.Static("/static", "./static")

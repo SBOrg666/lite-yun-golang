@@ -68,11 +68,8 @@ func LoginHandler_post(c *gin.Context) {
 	rows.Close()
 	db.Close()
 	if user.Password != passwordInDb {
-		log.Println("login failed")
 		c.String(http.StatusOK, "failed")
 	} else {
-		//c.SetCookie("login", "true", 0, "/", "", false, true)
-		log.Println("login ok")
 		session := sessions.Default(c)
 		session.Set("login", "true")
 		session.Save()
@@ -159,49 +156,49 @@ func ProcessInfoHandler_ws(w http.ResponseWriter, r *http.Request) {
 									if err == nil {
 										conn.WriteMessage(t, []byte(info[0]+" succeed"))
 									} else {
-										conn.WriteMessage(t, []byte("AccessDenied"))
+										conn.WriteMessage(t, []byte(fmt.Sprint(err)))
 									}
 								} else if info[1] == "2" {
 									err = pro.Resume()
 									if err == nil {
 										conn.WriteMessage(t, []byte(info[0]+" succeed"))
 									} else {
-										conn.WriteMessage(t, []byte("AccessDenied"))
+										conn.WriteMessage(t, []byte(fmt.Sprint(err)))
 									}
 								} else if info[1] == "3" {
 									err = pro.Terminate()
 									if err == nil {
 										conn.WriteMessage(t, []byte(info[0]+" succeed"))
 									} else {
-										conn.WriteMessage(t, []byte("AccessDenied"))
+										conn.WriteMessage(t, []byte(fmt.Sprint(err)))
 									}
 								} else if info[1] == "4" {
 									err = pro.Kill()
 									if err == nil {
 										conn.WriteMessage(t, []byte(info[0]+" succeed"))
 									} else {
-										conn.WriteMessage(t, []byte("AccessDenied"))
+										conn.WriteMessage(t, []byte(fmt.Sprint(err)))
 									}
 								} else {
-
+									conn.WriteMessage(t, []byte("invalid operation"))
 								}
 							} else {
-								conn.WriteMessage(t, []byte("AccessDenied"))
+								conn.WriteMessage(t, []byte("create time not match"))
 							}
 						} else {
-							conn.WriteMessage(t, []byte("AccessDenied"))
+							conn.WriteMessage(t, []byte(fmt.Sprint(err)))
 						}
 					} else {
-						conn.WriteMessage(t, []byte("AccessDenied"))
+						conn.WriteMessage(t, []byte("process not exist"))
 					}
 				} else {
-					conn.WriteMessage(t, []byte("AccessDenied"))
+					conn.WriteMessage(t, []byte(fmt.Sprint(err)))
 				}
 			} else {
 				if fmt.Sprint(err) == "websocket: close 1001 (going away)" {
 					return
 				}
-				conn.WriteMessage(t, []byte("AccessDenied"))
+				conn.WriteMessage(t, []byte(fmt.Sprint(err)))
 			}
 
 		}
@@ -291,7 +288,6 @@ func DownloadHandler_post(c *gin.Context) {
 			}
 			filelist.Files[i] = path
 		}
-		fmt.Println(filelist.Files)
 		if len(filelist.Files) == 0 {
 			logErr(err)
 			c.String(http.StatusBadRequest, fmt.Sprint(err))
@@ -331,7 +327,7 @@ func DownloadHandler_post(c *gin.Context) {
 }
 
 func UploadHandler_post(c *gin.Context) {
-	path := c.DefaultQuery("path", "")
+	path:=c.DefaultPostForm("path","")
 	if len(path) == 0 {
 		c.String(http.StatusBadRequest, "invalid path")
 	} else {

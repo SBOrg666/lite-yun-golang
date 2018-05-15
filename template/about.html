@@ -275,21 +275,20 @@
             </div>
         </div>
     </div>
-    <!-- Bootstrap core JavaScript-->
-    <script src="/static/vendor/jquery/jquery.min.js"></script>
-    <script src="/static/js.cookie-2.2.0.min.js"></script>
-    <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- Core plugin JavaScript-->
-    <script src="/static/vendor/jquery-easing/jquery.easing.min.js"></script>
-    <!-- Custom scripts for all pages-->
-    <script src="/static/js/sb-admin.min.js"></script>
-    <script>
-        $("#logout_btn").click(function () {
-            Cookies.remove('login');
-            Cookies.remove('_xsrf');
-        });
-    </script>
 </div>
+<!-- Bootstrap core JavaScript-->
+<script src="/static/vendor/jquery/jquery.min.js"></script>
+<script src="/static/js.cookie-2.2.0.min.js"></script>
+<script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Core plugin JavaScript-->
+<script src="/static/vendor/jquery-easing/jquery.easing.min.js"></script>
+<!-- Custom scripts for all pages-->
+<script src="/static/js/sb-admin.min.js"></script>
+<script>
+    $("#logout_btn").click(function () {
+        Cookies.remove('session');
+    });
+</script>
 </body>
 
 </html>

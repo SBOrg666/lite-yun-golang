@@ -121,12 +121,6 @@
                     </li>
                 </ul>
             </li>
-            <!--<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Link">-->
-            <!--<a class="nav-link" href="#">-->
-            <!--<i class="fa fa-fw fa-link"></i>-->
-            <!--<span class="nav-link-text">Link</span>-->
-            <!--</a>-->
-            <!--</li>-->
         </ul>
         <ul class="navbar-nav sidenav-toggler">
             <li class="nav-item">
@@ -324,11 +318,6 @@
 <script type="text/javascript">
     var urls = new Set();
 
-    $(function(){
-        // $("select[name='dataTable_length']")[0].options[0].selected = false;
-        // $("select[name='dataTable_length']")[0].options[3].selected = true;
-    });
-
     $("#check_all").click(function () {
         if (this.checked === true) {
             $(".checkboxes").each(function () {
@@ -436,7 +425,7 @@
         },
         maxFileSize: 99 * 1024 * 1024,
         formData: {
-            'path': $("#path").html().substring(6)
+            'path': $("#path").html().substring(5)
         },
         returnType: "json",
         progressall: function (e, data) {
@@ -476,8 +465,7 @@
     });
 
     $("#logout_btn").click(function () {
-        Cookies.remove('login');
-        Cookies.remove('_xsrf');
+        Cookies.remove('session');
     });
 </script>
 

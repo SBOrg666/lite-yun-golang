@@ -83,7 +83,7 @@
     $.urlParam = function (name) {
         var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
         return results[1] || 0;
-    }
+    };
 
     $("#showpasswd").click(function () {
         if ($(this).attr("class") === "fa fa-fw fa-eye-slash") {
@@ -94,7 +94,7 @@
             $(this).attr("class", "fa fa-fw fa-eye-slash");
             $("#exampleInputPassword1").attr("type", "password");
         }
-    })
+    });
 
     $(function () {
         $("#form").submit(function () {
@@ -120,7 +120,7 @@
                         }
                     }
                 }
-            )
+            );
             return false;
         })
     })
